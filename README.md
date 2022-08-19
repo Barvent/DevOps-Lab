@@ -39,7 +39,7 @@ Currently it is configured to balance the traffic between two servers, which rig
 
 Configuring the proxy only requires to copy the file loadbalancer/haproxy.cfg to /etc/haproxy/haproxy.cfg and then restarting the service using `sudo systemctl restart haproxy`.
 
-It is missing balancing the traffic between different servers and using L7 capabilities.
+It is missing balancing the traffic between different servers.
 
 ## TLS Configuration
 The first thing that is needed to configure TLS is a public/private key pair. As this is a development environment I've generated the pair (and a self signed certificate) using the following commands:
@@ -56,8 +56,23 @@ bind 10.0.0.3:443 ssl crt /etc/ssl/private/haproxy.key
 redirect scheme https if !{ ssl_fc }
 ```
 
+## L7 capabilities
+HAProxy allows to read application level information, such as headers or the path of the HTTP request. In my case I have used the path of the request to select to which backend it should be sent. If the path begins with /bye it gets send to the byeservers backend, otherwise it gets send to the webservers backend.
+
+To configure this I've added a new backend section and a rule in the frontend to match with the path.
+
+```
+frontend myfrotend
+#...
+        use_backend byeservers if { path_beg /bye }
+#...
+backend byeservers
+        server byeweb1 10.0.3.10:5002
+```
+
 # Web Application
-It is a simple Flask application which sends "Hello World from {hostname}!", to check from which server it is being sent.
+It is a simple Flask application which sends "Hello, World from {hostname}!", to check from which server it is being sent. 
+There is a second version of it which is exactly the same, but it sends "Bye, World from {hostname}!", to check the L7 capabilities of HAProxy.
 
 ## Manual installation (without Docker and Gunicorn)
 The installation of the webapp is done using pipenv
