@@ -27,11 +27,16 @@ sudo netplan try
 sudo netplan apply
 ```
 
-# Manual installation
+# Manual installation (without Docker and Gunicorn)
 The installation of the webapp is done using pipenv
 ```
 pip install pipenv
 cd webapp
 pipenv install
-pipenv run flask --app main run
+pipenv run flask --app wsgi run
+```
+# Docker installation
+```
+sudo docker build -t webapp .
+sudo docker run --name webapp --rm -p 5000:5000 -it webapp
 ```
