@@ -5,10 +5,12 @@ Simple laboratory to try DevOps concepts
 
 ## Machine list
 For now there are the following machines in the network:
-Machine |   Service |   IP
-linuxtemplate   |   Template    |   10.0.3.2
-loadb   |   Load balancer   |   10.0.3.9
-web1    |   Serve a webapp    | 10.0.3.10
+
+| Machine       | Service         | IP        |
+|---------------|-----------------|-----------|
+| linuxtemplate | Template        | 10.0.3.2  |
+| loadb         | Load balancer   | 10.0.3.9  |
+| web1          | Serve a web app | 10.0.3.10 |
 
 ## Networking documentation
 Use netplan to change the network configuration.
