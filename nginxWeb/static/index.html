@@ -31,25 +31,27 @@
     <script>
         async function fetchAsync(url) {
             let response = await fetch(url);
-            let data = await response.text();
+	    let data = null;
+	    if (!await response.ok) { data = "No response..."; }
+            else data = await response.text();
             return data;
         }
 
         async function chat() {
-            actionButton = document.getElementById("action")
-            response = null
-            newAction = null
+            actionButton = document.getElementById("action");
+            response = null;
+            newAction = null;
             if (actionButton.textContent === "Greetings!") {
-                newAction = "Bye!"
-                response = await fetchAsync("https://www.randomnumberapi.com/api/v1.0/random?min=100&max=1000&count=1")
+                newAction = "Bye!";
+                response = await fetchAsync("/hello");
             }
             else {
-                newAction = "Greetings!"
-                response = await fetchAsync("https://www.randomnumberapi.com/api/v1.0/random?min=0&max=100&count=1")
+                newAction = "Greetings!";
+                response = await fetchAsync("/bye");
             }
-            actionButton.textContent = newAction
-            responseText = document.getElementById("response")
-            responseText.textContent = response
+            actionButton.textContent = newAction;
+            responseText = document.getElementById("response");
+            responseText.textContent = response;
         }
     </script>
   </body>
