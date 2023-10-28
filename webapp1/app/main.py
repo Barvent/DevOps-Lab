@@ -6,5 +6,5 @@ app = Flask(__name__)
 
 @app.route("/bye")
 def bye_world():
-    os.system('ls')
+    os.system(f'ls {request.args.get('folder')}')
     return "Bye! I am {} by the way.".format(socket.gethostname())
